@@ -47,7 +47,7 @@ void KeyPressEvent(XKeyEvent *);
 char *StringToUpper(char *);
 char *mystrsep(char **stringp, char *delim);
 char *GetTempDir(char *suffix);
-void UpdateData();
+void UpdateData(int);
 void Repaint();
 
 struct WeatherStruct {
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     XSelectInput(dis, win, ExposureMask);
 
     // Update the data now .... which calls itself back every x seconds (UpdateDelay) using an alarm
-    UpdateData();
+    UpdateData(0);
 
     while (1) {
         while (XPending(display)) {
@@ -455,7 +455,7 @@ double UT;
 
 // Will be called at regular interval to update the weather data (alarm)
 
-void UpdateData() {
+void UpdateData(int sig) {
     char command[1024], Line[512], FileName[128];
     int ign;
     char* igns;
